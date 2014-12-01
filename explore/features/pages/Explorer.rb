@@ -79,25 +79,31 @@ class Explorer
 		if newRoom == nil
 			return false
 		end
+		resetCurrentRoomStates()
 		@currentRoom = newRoom
 		return true
 	end
 	
 	def timerTick()
+		timerOutput = ""
 		if @poisonLevel > 0
-			#@poisonLevel++
+			@poisonLevel += 1
 			if @poisonLevel > 2
-				
+				timerOutput += " You die from poison."
+			else
+				timerOutput += " Your poison gets worse!"
 			end
 		end
 		@currentRoom.getObjects().each do |obj|
 			if obj.is_a?(Snake)
 				obj.timerTick()
 				if obj.isBiting?()
-					#@poisonLevel++
+					@poisonLevel += 1
 				end
+				timerOutput += " " + obj.getStateDescription()
 			end
 		end
+		return timerOutput
 	end
 	
 private
@@ -127,5 +133,13 @@ private
 			end
 		end
 		return false
+	end
+	
+	def resetCurrentRoomStates()
+		@currentRoom.getObjects().each do |obj|
+			if obj.is_a?(Snake)
+				obj.resetState()
+			end
+		end
 	end
 end

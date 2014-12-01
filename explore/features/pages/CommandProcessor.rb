@@ -38,23 +38,31 @@ class CommandProcessor
 	
 private
 	def get(subject)
+		getResult = ""
 		if subject == nil
 			return "Usage: get ITEM_IN_ROOM"
-		end
-		if @explorer.addObjectToInventory(subject)
-			return "Got #{subject}."
 		else
-			return "Unable to obtain #{subject}."
+			if @explorer.addObjectToInventory(subject)
+				getResult = "Got #{subject}."
+			else
+				return "Unable to obtain #{subject}."
+			end
 		end
+		
+		getResult += @explorer.timerTick()
+		if(getResult.include?("You die"))
+			@quitting = true
+		end
+		return getResult
 	end
 
 	def go(subject)
+		goResult = "Unable to exit #{subject}."
 		if @explorer.goExit(subject)
 			goResult = "You exit #{subject}.\n"
 			goResult << look(nil)
-			return goResult
 		end
-		return "Unable to exit #{subject}."
+		return goResult
 	end
 	
 	def help(subject)
@@ -71,22 +79,38 @@ private
 	end
 	
 	def light(subject)
+		lightResult = "Usage: light ITEM_CARRIED"
 		if subject == nil
-			return "Usage: light ITEM_CARRIED"
-		elsif @explorer.lightObject(subject)
-			return "Lit #{subject}."
+			return lightResult
+		end
+		if @explorer.lightObject(subject)
+			lightResult = "Lit #{subject}."
 		else
 			return "Unable to light #{subject}"
 		end
+
+		lightResult += @explorer.timerTick()
+		if(lightResult.include?("You die"))
+			@quitting = true
+		end
+		return lightResult
 	end
 	
 	def look(subject)
+		lookResult = ""
 		if subject == nil
-			return "#{@explorer.getCurrentRoomDescription()} Objects in this room: #{@explorer.look()}"
+			lookResult = "#{@explorer.getCurrentRoomDescription()} Objects in this room: #{@explorer.look()}"
 		elsif subject == "items"
-			return @explorer.getObjectNames()
+			lookResult = "#{@explorer.getObjectNames()}"
+		else
+			lookResult = @explorer.lookObject(subject)
 		end
-		return @explorer.lookObject(subject)
+		
+		lookResult += @explorer.timerTick()
+		if(lookResult.include?("You die"))
+			@quitting = true
+		end
+		return lookResult
 	end
 	
 	def quit(subject)
@@ -95,9 +119,15 @@ private
 	end
 	
 	def talk(subject)
-		if subject == nil
-			return "You mutter to yourself."
+		talkResult = "You mutter to yourself."
+		if subject != nil
+			talkResult = @explorer.talkTo(subject)
 		end
-		return @explorer.talkTo(subject)
+
+		talkResult += @explorer.timerTick()
+		if(talkResult.include?("You die"))
+			@quitting = true
+		end
+		return talkResult
 	end
 end

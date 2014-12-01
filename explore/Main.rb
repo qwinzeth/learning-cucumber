@@ -16,6 +16,10 @@ rooms[0].setDark(false)
 
 rooms << Room.new("Room 2", "An underground tunnel.")
 rooms[0].addTwoWayExit("east", rooms[1], "west")
+rooms[1].addObject(Snake.new())
+
+rooms << Room.new("Room 3", "A fork in the cave.")
+rooms[1].addTwoWayExit("east", rooms[2], "west")
 
 explorer = Explorer.new(rooms[0])
 
