@@ -85,7 +85,7 @@ class Explorer
 	
 	def timerTick()
 		if @poisonLevel > 0
-			@poisonLevel++
+			#@poisonLevel++
 			if @poisonLevel > 2
 				
 			end
@@ -94,7 +94,7 @@ class Explorer
 			if obj.is_a?(Snake)
 				obj.timerTick()
 				if obj.isBiting?()
-					@poisonLevel++
+					#@poisonLevel++
 				end
 			end
 		end

@@ -13,7 +13,7 @@ class Snake < ExObj
 	end
 	
 	def timerTick()
-		@state++
+		@state = @state + 1
 	end
 	
 	def isBiting?()
