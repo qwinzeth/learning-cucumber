@@ -68,12 +68,13 @@ private
 	def help(subject)
 		helptext = ""
 		if subject == nil
-			helptext = "get ITEM_IN_ROOM\n"
+			helptext = "\nget ITEM_IN_ROOM\n"
 			helptext << "go EXIT\n"
 			helptext << "help [command]\n"
 			helptext << "light ITEM_CARRIED\n"
 			helptext << "look [ITEM_CARRIED|items]\n"
 			helptext << "quit\n"
+			helptext << "talk\n\n"
 		end
 		return helptext
 	end

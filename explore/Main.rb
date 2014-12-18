@@ -28,7 +28,7 @@ commandProcessor = CommandProcessor.new(explorer, rooms)
 puts(commandProcessor.process("look"))
 puts("Type 'help' for help.")
 while !commandProcessor.isQuitting?()
-	print "Command: "
+	print "\nCommand: "
 	command = gets().strip().downcase()
 	puts commandProcessor.process(command)
 end
